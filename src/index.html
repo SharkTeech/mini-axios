@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>axios</title>
+		<script src="../dist/mini-axios.js"></script>
+	</head>
+	<body>
+		<button class="send">发送</button>
+		<button class="cancel">取消</button>
+		<script>
+			const { axios } = Axios;
+			// for (let key in axios) console.log(axios[key]);
+			const send = document.querySelector('.send');
+			const CancelToken = axios.CancelToken;
+			let cancelToken;
+			send.addEventListener('click', () => {
+				axios.interceptors.request.use(config => {
+					console.log(1);
+					return config;
+				});
+				axios.interceptors.request.use(config => {
+					console.log(2);
+					return config;
+				});
+				axios.interceptors.request.use(config => {
+					console.log(3);
+					return config;
+				});
+				// axios.interceptors.response.use(response => {
+				// 	console.log(1);
+				// 	return response;
+				// });
+				// axios.interceptors.response.use(response => {
+				// 	console.log(2);
+				// 	return response;
+				// });
+				// axios.interceptors.response.use(response => {
+				// 	console.log(3);
+				// 	return response;
+				// });
+				// debugger;
+				axios({
+					url: 'http://localhost:8082/test',
+					method: 'POST',
+					cancelToken: new CancelToken(function (cancel) {
+						cancelToken = cancel;
+					}),
+				}).then(
+					data => console.log(data),
+					err => console.log(err)
+				);
+			});
+			const cancel = document.querySelector('.cancel');
+			cancel.addEventListener('click', () => {
+				cancelToken();
+			});
+		</script>
+	</body>
+</html>
