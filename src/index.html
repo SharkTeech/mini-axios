@@ -45,6 +45,9 @@
 				axios({
 					url: 'http://localhost:8082/test',
 					method: 'POST',
+					data: {
+						name: '123',
+					},
 					cancelToken: new CancelToken(function (cancel) {
 						cancelToken = cancel;
 					}),

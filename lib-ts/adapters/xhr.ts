@@ -3,7 +3,7 @@ import { requestConfig } from '../defaults';
 //XMLHttpRequest方式实现
 export function xhrAdapter(config: requestConfig): Promise<unknown> {
 	return new Promise((resolve, reject) => {
-		const request = new XMLHttpRequest();
+		let request: XMLHttpRequest | null = new XMLHttpRequest();
 		request.open(config.method, config.url);
 		request.onreadystatechange = function handleLoad() {
 			if (!request || request.readyState !== 4) return;
@@ -32,12 +32,14 @@ export function xhrAdapter(config: requestConfig): Promise<unknown> {
 						new Error(`'Request failed with status code ${request.status}`)
 					);
 			}
+			request = null;
 		};
 
 		if (config.cancelToken) {
 			const onCanceled = function () {
 				reject('cancel');
-				request.abort();
+				request?.abort();
+				request = null;
 			};
 			config.cancelToken.subscribe(onCanceled);
 		}

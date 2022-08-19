@@ -16,8 +16,9 @@ serve.on('request', (req, res) => {
 			(err, data) => res.end(data)
 		);
 	if (req.url === '/test') {
-		// res.end('Test');
-		setTimeout(() => res.end('Test'), 5000);
+		// console.log();
+		res.end('Test');
+		// setTimeout(() => res.end('Test'), 5000);
 	}
 });
 
